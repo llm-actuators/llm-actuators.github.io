@@ -10,7 +10,7 @@
     --bg:#0c0d10;--panel:#131419;--panel2:#171922;--line:#23252d;--line2:#2f323c;
     --ink:#e7e8ec;--muted:#9aa0ab;--faint:#666c77;
     --accent:#4db6a4;--accent2:#74d2c0;--teal:#e0876f;
-    --rust:#d98a4a;--swift:#e06a5e;--go:#48b0c4;--shell:#78b56a;--meta:#a78bd6;
+    --rust:#d98a4a;--swift:#e06a5e;--go:#48b0c4;--shell:#78b56a;--python:#4b8bbe;--meta:#a78bd6;
     --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box}
@@ -63,7 +63,7 @@
   .chip.rev{border-color:var(--teal)}
   .chip.path{border-color:var(--accent);background:rgba(77,182,164,.1)}
   .chip.hushed{opacity:.28}
-  .dot.rust{background:var(--rust)}.dot.swift{background:var(--swift)}.dot.go{background:var(--go)}.dot.shell{background:var(--shell)}.dot.meta{background:var(--meta)}
+  .dot.rust{background:var(--rust)}.dot.swift{background:var(--swift)}.dot.go{background:var(--go)}.dot.shell{background:var(--shell)}.dot.python{background:var(--python)}.dot.meta{background:var(--meta)}
 
   .detail{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 22px;min-height:120px}
   .detail .dnm{font-family:var(--mono);font-size:16px;font-weight:700}
@@ -94,11 +94,11 @@
   <div class="kick">llm-actuators</div>
   <h1>The system in a nutshell</h1>
   <div class="tag">The open toolchain behind a <b>supervised multi-agent fleet</b>. These are the sterile primitives that let <b>LLM agents drive real machines</b> — physical phones, browsers, Figma designs, running processes, and each other — then <b>compose</b> into a system that ships production software under human guardrails. Each tool does one job through a parseable CLI; the power is in how they connect.</div>
-  <div class="sub">27 single-purpose repos across Rust, Swift, Go and Shell. Hover any box below to trace its integrations — <span style="color:var(--accent2)">teal = what it drives</span>, <span style="color:var(--teal)">coral = what drives it</span> — or run a scenario to watch a real task flow through the stack.</div>
+  <div class="sub">30 single-purpose repos across Rust, Swift, Go, Python and Shell. Hover any box below to trace its integrations — <span style="color:var(--accent2)">teal = what it drives</span>, <span style="color:var(--teal)">coral = what drives it</span> — or run a scenario to watch a real task flow through the stack.</div>
 
   <div class="links">
     <a class="oref solid" href="https://github.com/llm-actuators/llms" target="_blank" rel="noopener">Start here → llms · the LLM-first index</a>
-    <a class="oref" href="https://github.com/llm-actuators" target="_blank" rel="noopener">↗ Browse all 27 repos on GitHub</a>
+    <a class="oref" href="https://github.com/llm-actuators" target="_blank" rel="noopener">↗ Browse all 30 repos on GitHub</a>
   </div>
 
   <div class="bar">
@@ -125,18 +125,18 @@
     </div>
   </div>
 
-  <div id="scncap" class="detail"><div class="prob"><b>27 tools, one job each — composed into one supervised fleet.</b> Three backbone hubs carry the system: <b style="color:var(--accent2)">switchboard</b> (the message bus), <b style="color:var(--accent2)">substrate</b> (the scaffold), and <b style="color:var(--accent2)">semantic-schema</b> (the shared data contract). Hover any box to trace its integrations, or run a scenario above.</div></div>
+  <div id="scncap" class="detail"><div class="prob"><b>30 tools, one job each — composed into one supervised fleet.</b> Three backbone hubs carry the system: <b style="color:var(--accent2)">switchboard</b> (the message bus), <b style="color:var(--accent2)">substrate</b> (the scaffold), and <b style="color:var(--accent2)">semantic-schema</b> (the shared data contract). Hover any box to trace its integrations, or run a scenario above.</div></div>
 
   <div class="legend" id="legend"></div>
   <div class="foot">
-    27 single-purpose repos across Rust, Swift, Go and Shell — supervised, R&amp;D-grade, self-built. Every line is a runtime integration between tools; the arrow points from the caller to what it drives. One canonical layer model; the static architecture diagram in the org README renders the same graph.
+    30 single-purpose repos across Rust, Swift, Go, Python and Shell — supervised, R&amp;D-grade, self-built. Every line is a runtime integration between tools; the arrow points from the caller to what it drives. One canonical layer model; the static architecture diagram in the org README renders the same graph.
     <div style="margin-top:12px">Explore the code: <a href="https://github.com/llm-actuators">github.com/llm-actuators</a> · start at <a href="https://github.com/llm-actuators/llms">llms</a>, the entrypoint index.</div>
     <div style="margin-top:12px">Designed, built and operated by <b>Siniša Marjanović</b> · <a href="https://www.linkedin.com/in/sinisa-m-150b3988">LinkedIn</a> · <a href="https://github.com/marjan89">GitHub</a></div>
   </div>
 </div>
 
 <script>
-const LANGS={rust:"Rust",swift:"Swift",go:"Go",shell:"Shell",meta:"—"};
+const LANGS={rust:"Rust",swift:"Swift",go:"Go",shell:"Shell",python:"Python",meta:"—"};
 const LAYERS=[
  {t:"Entry",d:"where an LLM starts",repos:[
    {id:"llms",lang:"meta",p:"The canonical LLM-first index to the whole toolchain — the single 'start here' entrypoint that tells an agent what exists and how to call it."},
@@ -146,6 +146,7 @@ const LAYERS=[
    {id:"skill-router",lang:"rust",p:"The guardrail router. A PreToolUse hook that matches every tool call against TOML rules and allows, denies, or reroutes it — policy-as-code, enforced before the action runs."},
    {id:"workflows",lang:"rust",p:"A workflow state-machine enforcer over hooks — stops an agent skipping required steps or acting out of order."},
    {id:"substrate",lang:"rust",p:"The scaffolding layer. Skills + primitives + configs + hooks + memory, organized so adding a new project, company, or primitive is one command."},
+   {id:"hooks",lang:"shell",p:"The hook enforcement + session-lifecycle layer. PreToolUse/PostToolUse gates, plus session-start (pins the true model id so token-monitor sees the real window) and post-compact (recovers active skills, drives the compact-self resume path)."},
  ]},
  {t:"Coordination substrate",d:"the nervous system — how agents and devices talk and stay out of each other's way",repos:[
    {id:"switchboard",lang:"rust",p:"The message bus. File-based pub/sub for multi-session coordination — one log per channel, one cursor per subscriber, durable JSONL on disk, no broker to run."},
@@ -177,6 +178,7 @@ const LAYERS=[
    {id:"token-monitor",lang:"shell",p:"Reads a session's live token usage from the transcript on disk — so agent spend can be budgeted and monitored in real time."},
    {id:"burn",lang:"shell",p:"Aggregates token-burn across every session in the fleet — the cost picture across many agents at once."},
    {id:"actuators-doctor",lang:"rust",p:"A fleet-wide health check that verifies every llm-actuators binary is present, current and working."},
+   {id:"fleet-tooling",lang:"python",p:"Fleet-digest + ops tooling. Aggregates live state from switchboard, todo and resources into the operator's fleet digest; also the idle-worktree helper for background work."},
  ]},
 ];
 // edges: [from, to, kind]  — "from depends on / drives / uses to".  kind: 'code' (Cargo dep) | 'int' (documented integration)
@@ -193,6 +195,9 @@ const EDGES=[
  ["burn","token-monitor","int"],["remote-control","compact-self","int"],
  ["actuators-doctor","idb","int"],["actuators-doctor","ddb","int"],["actuators-doctor","switchboard","int"],
  ["actuators-doctor","token-monitor","int"],["actuators-doctor","recruit","int"],
+ ["hooks","token-monitor","int"],["hooks","skill-router","int"],["hooks","compact-self","int"],
+ ["fleet-tooling","switchboard","int"],["fleet-tooling","todo","int"],["fleet-tooling","resources","int"],
+ ["fleet-tooling","idle-work","int"],["fleet-tooling","fleet-tui","int"],
 ];
 const SCENARIOS={
  ios:{cap:"<b>Run a UI test on a real iPhone.</b> A teammate is spawned, joins the wire, clears the guardrails, drives the physical device, reads its live UI, and checks it against the schema for drift.",path:["recruit","switchboard","skill-router","idb","semantic-schema","vdb"]},
@@ -227,7 +232,7 @@ LAYERS.forEach(L=>{
 });
 document.body.addEventListener('click',()=>{if(pinned){pinned=null;clearAll();}});
 
-const LGCOLOR={rust:"var(--rust)",swift:"var(--swift)",go:"var(--go)",shell:"var(--shell)",meta:"var(--meta)"};
+const LGCOLOR={rust:"var(--rust)",swift:"var(--swift)",go:"var(--go)",shell:"var(--shell)",python:"var(--python)",meta:"var(--meta)"};
 let pinned=null;
 
 function center(id){
@@ -255,7 +260,7 @@ function drawEdge(from,to,color,marker,op,w){
 }
 function clearEdges(){[...svg.querySelectorAll('path')].forEach(p=>{if(!p.closest('marker'))p.remove();});}
 function clearChipClasses(){document.querySelectorAll('.chip').forEach(c=>c.classList.remove('sel','dep','rev','path','hushed'));}
-const SUMMARY='<div class="prob"><b>27 tools, one job each — composed into one supervised fleet.</b> Three backbone hubs carry the system: <b style="color:var(--accent2)">switchboard</b> (the message bus), <b style="color:var(--accent2)">substrate</b> (the scaffold), and <b style="color:var(--accent2)">semantic-schema</b> (the shared data contract). Hover any box to trace its integrations, or run a scenario above.</div>';
+const SUMMARY='<div class="prob"><b>30 tools, one job each — composed into one supervised fleet.</b> Three backbone hubs carry the system: <b style="color:var(--accent2)">switchboard</b> (the message bus), <b style="color:var(--accent2)">substrate</b> (the scaffold), and <b style="color:var(--accent2)">semantic-schema</b> (the shared data contract). Hover any box to trace its integrations, or run a scenario above.</div>';
 function clearAll(){clearEdges();clearChipClasses();document.querySelectorAll('.btn').forEach(b=>b.classList.remove('on'));
   const cap=document.getElementById('scncap');cap.className='detail';cap.innerHTML=SUMMARY;}
 
